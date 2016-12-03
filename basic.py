@@ -85,6 +85,7 @@ class Action(object):
 		return 'Action[%s]' % self.name
 
 class Todo(object):
+
 	def __init__(self, name, trigger, action, ):
 		"""todo: condition -> action"""
 		self.name = name
