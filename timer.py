@@ -21,17 +21,17 @@ class Timer(Component):
     def set_repeat(self,repeat):
         self.repeat = repeat
 
-    def pre_run(self, msg):
+    def pre_run(self, cmd):
         self.next_state = self.curr_state  #default
         if (self.curr_state == 'stop'):
             return
 
         if (self.curr_state == 'run'):
-            if (msg == 'tick'):
+            if (cmd == 'tick'):
                 self.cnt = (self.cnt+1) % (self.timer+1)  
-            self.next_state = 'triggered' if (self.cnt == self.timer) else self.curr_state
+            self.next_state = 'executeed' if (self.cnt == self.timer) else self.curr_state
       
-        if (self.curr_state == 'triggered'):
+        if (self.curr_state == 'executeed'):
             if (self.repeat):
                 self.next_state = 'run'
                 self.cnt = 1
@@ -42,7 +42,7 @@ class Timer(Component):
     def __repr__(self):
         return 'name=%s, curr_state=%s timer=%s cnt=%s' % (self.name, self.curr_state, self.timer, self.cnt)
 
-    def trigger(self,msg):
+    def execute(self,cmd):
         if (self.debug):
             print self
-        Component.trigger(self, msg)
+        Component.execute(self, cmd)

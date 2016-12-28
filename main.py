@@ -16,5 +16,5 @@ heartbeatTimer.set_repeat(True)
 heartbeatTimer.add_master(heartbeat, 'low-high', 'tick')
 heartbeatTimer.start()
 for i in range(50):
-    heartbeat.trigger('none')
+    heartbeat.execute('none')
     #print heartbeat

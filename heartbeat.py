@@ -13,7 +13,7 @@ class Heartbeat(Component):
         self.curr_state = 'low'
         self.slave = []
 
-    def pre_run(self, msg):
+    def pre_run(self, cmd):
         if self.curr_state == 'low':
             self.next_state = 'low-high'
         elif self.curr_state == 'low-high':
