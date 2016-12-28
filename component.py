@@ -21,7 +21,7 @@ class Component(object):
     
     def add_caller(self, caller, caller_state, trigger_msg):
         caller.add_callee( caller_state, self, trigger_msg )
-
+        
     def trigger(self, msg):
         self.pre_run(msg)
         self.run()
