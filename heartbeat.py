@@ -11,7 +11,7 @@ class Heartbeat(Component):
         self.name = name
         self.states = Set(['low','low-high','high','high-low'])
         self.curr_state = 'low'
-        self.callee = []
+        self.slave = []
 
     def pre_run(self, msg):
         if self.curr_state == 'low':
