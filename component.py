@@ -1,10 +1,13 @@
+from sets import Set
+
 class Component(object):
     """basic component class """
     def __init__(self):
         self.slave = None
         self.curr_state = None
         self.next_state = None
-    
+        self.states = Set()
+
     def pre_run(self, cmd):
         """
         Use cmd as a communication mechanism to prepare what to do next in run 
@@ -29,3 +32,9 @@ class Component(object):
         self.pre_run(cmd)
         self.run()
         return
+
+    def set_next_state(self, n_state):
+        self.next_state = n_state
+
+    def update_state(self):
+        self.curr_state = self.next_state   
