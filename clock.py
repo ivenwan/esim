@@ -10,12 +10,18 @@ class Clock(Component):
         self.name = name
         self.states = {"stop", "low", "low-high", "high", "high-low"}
         self.actions = {"reset","start", "stop", "tick"}
+        self.message = []
         self.reset_cnt()
         self.curr_state = "stop"
+<<<<<<< HEAD
         self.low_max = low_cnt
         self.high_max = high_cnt
         self.scheduled_message = []
         self.outbound_mailbox = []
+=======
+        self.low_max = low_cnt-1
+        self.high_max = high_cnt-1
+>>>>>>> 1e8b5975749debbcd2136fac75e968bdf73940ff
 
     def reset_low_cnt(self):
         self.low_cnt = 0
@@ -67,6 +73,16 @@ class Clock(Component):
             
         # next state becomes current
         self.update_state()
+        self.notify()
+
+    def notify(self):
+        # clear the msg
+        self.message = []
+        if (self.curr_state == "low_high"):
+            self.message.append("posedge")    
+
+        if (self.curr_state == "high_low"):
+            self.message.append("negedge")        
 
     def schedule_mail_for_slave(self, master_trigger_state, mail, slave):
         scheduled_mail = (master_trigger_state, mail, slave)
@@ -89,13 +105,16 @@ class Clock(Component):
         self.curr_state = "stop"
 
     def __repr__(self):
-        return 'name=%s curr_state=%s low_cnt=%d high_cnt=%d' % (self.name, self.curr_state, self.low_cnt, self.high_cnt)
+       # msg = join(self.message)
+        return 'name=%s curr_state=%s low_cnt=%d high_cnt=%d message=%s' % (self.name, self.curr_state, self.low_cnt, self.high_cnt, self.message)
 
 myclock = Clock("testclock",5,5)
 myclock.start()
 for i in range(50):
+
     myclock.tick()
     print myclock
+
 #    def set_next_state(self, n_state):
 #        self.next_state = n_state
 
