@@ -14,6 +14,8 @@ class Clock(Component):
         self.curr_state = "stop"
         self.low_max = low_cnt
         self.high_max = high_cnt
+        self.scheduled_message = []
+        self.outbound_mailbox = []
 
     def reset_low_cnt(self):
         self.low_cnt = 0
@@ -65,6 +67,23 @@ class Clock(Component):
             
         # next state becomes current
         self.update_state()
+
+    def schedule_mail_for_slave(self, master_trigger_state, mail, slave):
+        scheduled_mail = (master_trigger_state, mail, slave)
+        self.postoffice.append(scheduled_mail)
+
+    def prepare_current_mail(self):
+        for (master_trigger_state,mail,slave) in self.scheduled_message:
+            if self.curr_state == master_trigger_state:
+                self.delivery_bin.append((mail,slave))
+
+    def send_mail_to_slave(self):
+        for (mail,slave) in self.curr_message:
+            slave.mailbox.append((self,mail))
+        
+            
+        
+
 
     def stop(self):
         self.curr_state = "stop"
