@@ -13,15 +13,12 @@ class Clock(Component):
         self.message = []
         self.reset_cnt()
         self.curr_state = "stop"
-<<<<<<< HEAD
-        self.low_max = low_cnt
-        self.high_max = high_cnt
+
         self.scheduled_message = []
         self.outbound_mailbox = []
-=======
         self.low_max = low_cnt-1
         self.high_max = high_cnt-1
->>>>>>> 1e8b5975749debbcd2136fac75e968bdf73940ff
+
 
     def reset_low_cnt(self):
         self.low_cnt = 0
