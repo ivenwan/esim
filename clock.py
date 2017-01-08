@@ -81,16 +81,19 @@ class Clock(Component):
         if (self.curr_state == "high_low"):
             self.message.append("negedge")        
 
-    def schedule_mail_for_slave(self, master_trigger_state, mail, slave):
-        scheduled_mail = (master_trigger_state, mail, slave)
+    def schedule_mail(self, trigger_state, mail, slave):
+        scheduled_mail = (trigger_state, mail, slave)
         self.postoffice.append(scheduled_mail)
 
     def prepare_current_mail(self):
+        """ Find the deliverable mails from all scheduled mails
+            Prepare a delivery bin based on current state
+        """
         for (master_trigger_state,mail,slave) in self.scheduled_message:
             if self.curr_state == master_trigger_state:
                 self.delivery_bin.append((mail,slave))
 
-    def send_mail_to_slave(self):
+    def deliver_mail_to_slave(self):
         for (mail,slave) in self.curr_message:
             slave.mailbox.append((self,mail))
         

@@ -38,3 +38,6 @@ class Component(object):
 
     def update_state(self):
         self.curr_state = self.next_state   
+
+
+    
