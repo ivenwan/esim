@@ -1,5 +1,6 @@
 from component import Component
 
+
 class Clock(Component):
     """This is a basic clock class
     """

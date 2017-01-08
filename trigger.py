@@ -41,7 +41,7 @@ class Trigger(object):
 
 # test
 test_trigger = Trigger()
-test_trigger.add_argument("sharability", "inner_sharable")
 test_trigger.new_trigger("CacheControl", "L1DCache", "data_arrival")
+test_trigger.add_argument("sharability", "inner_sharable")
 
 print test_trigger
