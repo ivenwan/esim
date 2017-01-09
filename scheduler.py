@@ -24,13 +24,13 @@ class Scheduler(object):
     def issue(self):
         # execute current action items
         if not self.schedule:
-            print "empty schedule"
+            print('empty schedule')
         if 0 in self.schedule:
             for action_item in self.schedule[0]:
                 self.do(action_item)  # execute ai
         
     def do(self,action_item):
-        print action_item
+        print(action_item)
 
     # process for next cycle
     
