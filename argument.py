@@ -44,4 +44,4 @@ test_args = Argument()
 test_args.insert('id', 5)
 test_args.insert('parent', 'John')
 
-print test_args
+print(test_args)

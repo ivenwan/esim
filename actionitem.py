@@ -26,15 +26,15 @@ class ActionItem(object):
     def __repr__(self):
         str = ""
         str = str + "ai:  %s.%s" % (self.owner, self.action)
-
+        return str
 
 # unit test
 class Agent(object):
     def open(self, arg):
-        print ("open")
+        print ("I am openning")
     
     def close(self, arg):
-        print ("close")
+        print ("I am closing")
 
 agent = Agent()
 ai = ActionItem()

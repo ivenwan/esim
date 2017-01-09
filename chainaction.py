@@ -21,7 +21,7 @@ class ChainAction(object):
         self.set_slave_actionitem(ai, arg)
 
 
-    def set_master_trigger(self,master, trigger):
+    def set_master_trigger(self, master, trigger):
         self.master = master
         self.trigger = trigger
 
@@ -31,19 +31,26 @@ class ChainAction(object):
     
     def __repr__(self):
         str = ''
-        str = str + "%s upon %s -> %s" % (self.master, self.slave, self.ai) 
+        str = str + "%s upon %s -> %s" % (self.master, self.trigger, self.ai) 
         return str
 
 # test
 # unit test
 class Agent(object):
+    def __init__(self,name):
+        self.name = name
+
     def open(self, arg):
         print ("open")
     
     def close(self, arg):
         print ("close")
 
-dummy = Agent()
+    def __repr__(self):
+        return self.name
+
+master = Agent("a master")
+slave = Agent("a slave")
 
 
 # create arg
@@ -51,9 +58,10 @@ arg = Argument()
 arg.insert("sharability", "inner_sharable")
 # create action item
 ai = ActionItem()
-ai.set_owner(dummy)
+ai.set_owner(slave)
 ai.set_action("open")
+ai.do()
 # create a chain-action
-chain_action0 = ChainAction(dummy, "Monday", ai, arg)
+chain_action0 = ChainAction(master, "Monday", ai, arg)
 
 print(chain_action0)

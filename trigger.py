@@ -1,6 +1,7 @@
 from argument import Argument
+from actionitem import ActionItem
 
-class Trigger(object):
+class ChainAction(object):
     """ This is a class for trigger:
         A trigger consists of:
         - a master
@@ -10,38 +11,49 @@ class Trigger(object):
         - Argument passed from Master to Slave for the function call
     """
 
-    def __init__(self):
+    def __init__(self, master, trigger, ai, arg):
         self.master = None
         self.slave = None
         self.trigger = None # master trigger condition
-        self.action = None # slave's function call
-        self.arguments = Argument() # create an arg object
+        self.ai = None # slave's function call
+        self.arg = None # create an arg object
+        self.set_master_trigger(master, trigger)
+        self.set_slave_actionitem(ai, arg)
 
-    def set_master(self,master):
+
+    def set_master_trigger(self,master, trigger):
         self.master = master
-
-    def set_slave(self,slave):
-        self.slave = slave
-
-    def set_trigger(self,trigger):
         self.trigger = trigger
 
-    def add_argument(self, argname, argval):
-        self.arguments.insert(argname, argval)
-
-    def new_trigger(self, master, slave, trigger):
-        self.set_master(master)
-        self.set_slave(slave)
-        self.set_trigger(trigger)
+    def set_slave_actionitem(self, ai, arg):
+        self.ai = ai
+        self.arg = arg
     
     def __repr__(self):
         str = ''
-        str = str + "%s triggers %s upon %s with arg %s" % (self.master, self.slave, self.trigger, self.arguments) 
+        str = str + "%s upon %s -> %s" % (self.master, self.slave, self.ai) 
         return str
 
 # test
-test_trigger = Trigger()
-test_trigger.new_trigger("CacheControl", "L1DCache", "data_arrival")
-test_trigger.add_argument("sharability", "inner_sharable")
+# unit test
+class Agent(object):
+    def open(self, arg):
+        print ("open")
+    
+    def close(self, arg):
+        print ("close")
 
-print test_trigger
+dummy = Agent()
+
+
+# create arg
+arg = Argument()
+arg.insert("sharability", "inner_sharable")
+# create action item
+ai = ActionItem()
+ai.set_owner(dummy)
+ai.set_action("open")
+# create a chain-action
+chain_action0 = ChainAction(dummy, "Monday", ai, arg)
+
+print(chain_action0)
