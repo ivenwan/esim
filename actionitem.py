@@ -1,3 +1,4 @@
+from test_util import Agent
 
 class ActionItem(object):
     """ A class create/maintain/process action item
@@ -11,7 +12,7 @@ class ActionItem(object):
 
     def set_owner(self, owner):
         self.owner = owner
-    
+
     def set_action(self, action):
         """ action is a function name of the owner
         """
@@ -24,23 +25,10 @@ class ActionItem(object):
         result = getattr(self.owner, self.action)(self.arg)
 
     def __repr__(self):
-        str = ""
-        str = str + "ai:  %s::%s" % (self.owner, self.action)
-        return str
+        return "ai:  %s::%s" % (self.owner, self.action)
 
 # unit test
-class Agent(object):
-    def __init__(self,name):
-        self.name = name
 
-    def open(self, arg):
-        print ("I am openning")
-    
-    def close(self, arg):
-        print ("I am closing")
-
-    def __repr__(self):
-        return self.name
 
 agent = Agent("dummy")
 ai = ActionItem()
