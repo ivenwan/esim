@@ -25,7 +25,7 @@ class ActionItem(object):
 
     def __repr__(self):
         str = ""
-        str = str + "ai: %s.%s" % (self.owner, self.action)
+        str = str + "ai:  %s.%s" % (self.owner, self.action)
 
 
 # unit test
