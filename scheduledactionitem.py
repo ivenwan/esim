@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from actionitem import ActionItem
 
 class ScheduledActionItem(ActionItem):
