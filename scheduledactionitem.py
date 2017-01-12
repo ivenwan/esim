@@ -39,7 +39,13 @@ ai.set_owner(agent)
 ai.set_action("open")
 ai.set_delay(4)
 
+
+
+
 for i in range(0,5):
     print ("clock %d:" % i)
     ai.do()
-   # print(ai)
+    
+    
+    
+    # print(ai)

@@ -11,5 +11,8 @@ class Agent(object):
     def close(self, arg):
         print ("I am closing")
 
+    def getName(self):
+        return self.name
+
     def __repr__(self):
         return self.name

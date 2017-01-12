@@ -1,4 +1,4 @@
-from sets import Set
+#from sets import Set
 
 class Component(object):
     """basic component class """

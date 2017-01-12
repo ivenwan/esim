@@ -18,7 +18,7 @@ class Argument(object):
 
     def remove(self, argname):
         del self.arglist[argname]
-
+        
     def get(self,argname):
         """ no argname -> None
             otherwise, return the argval
@@ -28,7 +28,7 @@ class Argument(object):
     def has(self, argname):
         """check if contain an argname
         """
-        if (sef.arglist[argname] == None):
+        if (self.arglist[argname] == None):
             return False
         return True 
 
@@ -42,6 +42,8 @@ class Argument(object):
 # test
 test_args = Argument()
 test_args.insert('id', 5)
-test_args.insert('parent', 'John')
 
+
+
+test_args.insert('parent', 'John')
 print(test_args)
