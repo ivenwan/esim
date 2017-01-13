@@ -29,30 +29,42 @@ class TokenPool(object):
         self.name = name
         self.tokenPool = []
 
-    def insertToken(self, token):
+    def insert(self, token):
         self.tokenPool.append(token)
     
-    def hasToken(self, component, infoString):
+    def has(self, component, infoString):
         for token in self.tokenPool:
             if (token.getComponent() == component) and (token.getInfoString() == infoString):
                 return token
             
         return None
         
-    def findAndRemoveToken(self, component, infoString):
+    def findAndRemove(self, component, infoString):
         """ find if token exist by component and infoString
         """
-        token = self.hasToken(component, infoString)
+        token = self.has(component, infoString)
         if token: # not None
             self.tokenPool.remove(token)
 
-    def findAndRemoveTokenAll(self, component, infoString):
+    def findAndRemoveAll(self, component, infoString):
         """ find if token exist by component and infoString
         """
-        token = self.hasToken(component, infoString)
+        token = self.has(component, infoString)
         while (token):
             self.tokenPool.remove(token)
-            token = self.hasToken(component, infoString)
+            token = self.has(component, infoString)
+
+    def removeAll(self):
+        del self.tokenPool[:]
+
+    def consolidate(self):
+        self.tokenPool = list(set(self.tokenPool))
+
+    def pop(self):
+        if self.tokenPool:  # not empty
+            return self.tokenPool.pop()
+        else:
+            return None # empty
 
     def __repr__(self):
         s = ''
@@ -73,24 +85,47 @@ token_l2miss = Token(l2cache, 'cacheMiss')
 token_l2hit = Token(l2cache,'cacheHit')
 
 tokenPool = TokenPool('globalTokenPool')
-tokenPool.insertToken(token_l1hit)
-tokenPool.insertToken(token_l1miss)
-tokenPool.insertToken(token_l2hit)
-tokenPool.insertToken(token_l2miss)
+tokenPool.insert(token_l1hit)
+tokenPool.insert(token_l1miss)
+tokenPool.insert(token_l2hit)
+tokenPool.insert(token_l2miss)
 print("*****Simple token test:\n")
 print(tokenPool)
 
 # duplicated token
-tokenPool.insertToken(token_l1hit)
+tokenPool.insert(token_l1hit)
 print("*****Duplicated token test:\n")
 print(tokenPool)
 
+# remove duplicated token
+tokenPool.consolidate()
+print("*****Consolidate token test:\n")
+print(tokenPool)
+
 # remove a token
+tokenPool.insert(token_l1hit)
 print("*****Find and remove token l2cache::cacheMiss test:\n")
-tokenPool.findAndRemoveToken(l2cache, 'cacheMiss')
+tokenPool.findAndRemove(l2cache, 'cacheMiss')
 print(tokenPool)
 
 # remove multiple-hit token
 print("*****Find and remove all token l1cache::cacheHit test:\n")
-tokenPool.findAndRemoveToken(l1cache, 'cacheHit')
+tokenPool.findAndRemove(l1cache, 'cacheHit')
 print(tokenPool)
+
+# remove all token
+print("*****remove all token test:\n")
+tokenPool.removeAll()
+print(tokenPool)
+
+tokenPool.insert(token_l1hit)
+tokenPool.insert(token_l1miss)
+tokenPool.insert(token_l2hit)
+tokenPool.insert(token_l2miss)
+print("*****pop one token test:\n")
+print(tokenPool.pop())
+print(tokenPool.pop())
+print(tokenPool.pop())
+print(tokenPool.pop())
+print(tokenPool.pop())
+print(tokenPool.pop())
