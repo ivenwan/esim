@@ -7,24 +7,24 @@ class Link(object):
         A dest is in the form of componentB::action3
         componentA::action1 -> componentB::action3 
     """
-    def __init__(self, fromComponent, fromComponentToken, toComponent, fromComponentAction):
-        self.fromComponent = fromComponent
-        self.fromComponentToken = fromComponentToken
-        self.toComponent = toComponennt
-        self.toComponentAction = toComponentAction
+    def __init__(self, src, srcToken, dest, destAction):
+        self.src = src
+        self.srcToken = srcToken
+        self.dest = dest
+        self.destAction = destAction
 
 
-    def getFromComponent(self):
+    def getSrc(self):
         """ return the from component object
         """
-        return self.fromComponent
+        return self.src
 
-    def getToComponent(self):
+    def getDest(self):
         """ return the to component object
         """
-        return self.toComponent
+        return self.dest
 
-    def checkToken(self, compTokenStr):
+    def checkTokenStr(self, compTokenStr):
         """ token is in the form of string 
             "L1CacheCtrl::cacheMiss"
             L1CacheCtrl is the component name
@@ -32,43 +32,84 @@ class Link(object):
             When L1CacheCtrl calls function checkTag, it can emit a cacheMiss token 
         """
             # split token string by "::"
-        (compName,tokenName) = str(compTokenStr).split('::')
-        if (compName == self.fromComponent.getName()) and (tokenName == self.fromComponentToken):
+        (srcName,tokenName) = str(compTokenStr).split('::')
+        if (srcName == self.fromComponent.getName()) and (tokenName == self.srcToken):
+            return True
+        else:
+            return False
+
+    def isTokenMatch(self, token):
+        """ token is in the form of [component, Token] 
+        """
+            # split token string by "::"
+        if (token.getComponent() == self.src) and (token.getInfoString() == self.srcToken):
             return True
         else:
             return False
 
     def activate(self):
-        """ once the evalToken returns true, the toComponent can be activated
+        """ once the evalToken returns true, the dest can be activated
         """
-        functionToCall = getattr(self.toComponent, self.toComponentAction)
+        functionToCall = getattr(self.dest, self.destAction)
         functionToCall()
     
+    def eval(self, token):
+        if self.isTokenMatch(token): # tokenMatch
+            self.activate()
+
     def __repr__(self):
         s = ""
-        s = self.fromComponent.getName() + "::" + self.fromComponentToken + "----->" +  \
-            self.toComponent.getName() + "." + self.toComponentAction
+        s = self.src.getName() + "::" + self.srcToken + "----->" +  \
+            self.dest.getName() + "." + self.destAction
 
         return s
 
 # unit test
 from test_util import Agent
 import random
+from token import Token
+from token import TokenPool
 
-class L1Cache(Agent):
+tokenPool = TokenPool('testTokenPool')
+
+class Cache(Agent):
     def __init__(self, name):
         super().__init__(name)
         random.seed(10)
 
     def checkTag(self):
         r = random.randint(0,10)
-        if r<6:
-            
+        if r<6: # cache hit
+            print('%s cache hit' % self.name)
+            emitToken = Token(self, 'cacheHit')
+        else: # cache miss
+            print('%s cache miss' % self.name)
+            emitToken = Token(self, 'cacheMiss')
+        
+        tokenPool.insert(emitToken)
+    
+    def serviceMiss(self):
+        print('%s is servicing miss' % self.name)
 
+    def serviceHit(self):
+        print('%s is servicing hit' % self.name)
 
-l1cache = Agent('L1Cache')
-l2cache = Agent('L2Cache')
+l1cache = Cache('L1Cache')
+l2cache = Cache('L2Cache')
 
+l1cache.checkTag()
+
+l1miss_action = Link(l1cache,'cacheMiss',l2cache,'serviceMiss')
+l1hit_action = Link(l1cache,'cacheHit',l2cache,'serviceHit')
+
+print(l1miss_action)
+print(l1hit_action)
+
+token=tokenPool.pop()
+while token:
+    l1miss_action.eval(token)
+    l1hit_action.eval(token)
+    token=tokenPool.pop()
 
 
     
