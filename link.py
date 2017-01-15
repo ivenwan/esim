@@ -1,4 +1,5 @@
-
+from actionitem import ActionItem
+import copy
 
 class Link(object):
     """ a link pointing from src to dest
@@ -7,12 +8,14 @@ class Link(object):
         A dest is in the form of componentB::action3
         componentA::action1 -> componentB::action3 
     """
-    def __init__(self, src, srcToken, dest, destAction):
+    def __init__(self, src, srcToken, dest, destAction, arg=None):
         self.src = src
         self.srcToken = srcToken
-        self.dest = dest
-        self.destAction = destAction
-
+        # create an action item for destination
+        self.ai = ActionItem()
+        self.ai.setOwner(dest)
+        self.ai.setAction(destAction)
+        self.ai.passArg(arg)
 
     def getSrc(self):
         """ return the from component object
@@ -22,7 +25,7 @@ class Link(object):
     def getDest(self):
         """ return the to component object
         """
-        return self.dest
+        return self.ai.getOwner()
 
     def checkTokenStr(self, compTokenStr):
         """ token is in the form of string 
@@ -49,9 +52,8 @@ class Link(object):
 
     def activate(self):
         """ once the evalToken returns true, the dest can be activated
-        """
-        functionToCall = getattr(self.dest, self.destAction)
-        functionToCall()
+        """        
+        self.ai.do()
     
     def eval(self, token):
         if self.isTokenMatch(token): # tokenMatch

@@ -10,16 +10,25 @@ class ActionItem(object):
         self.arg = None
 
 
-    def set_owner(self, owner):
+    def setOwner(self, owner):
         self.owner = owner
 
-    def set_action(self, action):
+    def setAction(self, action):
         """ action is a function name of the owner
         """
         self.action = action
+    
+    def getOwner(self):
+        return self.owner
 
-    def pass_arg(self, arg):
-        self.arg = arg
+    def getAction(self):
+        return self.action
+    
+    def getArg(self):
+        return self.arg
+
+    def passArg(self, arg):
+        self.arg = copy.deepcopy(arg)
 
     def do(self):
         result = getattr(self.owner, self.action)(self.arg)
@@ -32,8 +41,8 @@ class ActionItem(object):
 
 agent = Agent("dummy")
 ai = ActionItem()
-ai.set_owner(agent)
-ai.set_action("open")
+ai.setOwner(agent)
+ai.setAction("open")
 ai.do()
 
 
