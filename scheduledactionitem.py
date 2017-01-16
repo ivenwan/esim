@@ -7,8 +7,11 @@ class ScheduledActionItem(ActionItem):
         super().__init__()
         self.delay = 0
     
-    def set_delay(self, delay):
+    def setDelay(self, delay):
         self.delay = delay
+
+
+    
     
     def step(self):
         self.delay = self.delay - 1
@@ -35,9 +38,9 @@ from test_util import Agent
 
 agent = Agent("dummy")
 ai = ScheduledActionItem()
-ai.set_owner(agent)
-ai.set_action("open")
-ai.set_delay(4)
+ai.setOwner(agent)
+ai.setAction("open")
+ai.setDelay(4)
 
 
 
